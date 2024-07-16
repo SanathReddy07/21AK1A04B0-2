@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Average Calculator</title>
+    <script>
+        async function addNumber() {
+            const numberId = document.getElementById('numberId').value;
+            const number = document.getElementById('number').value;
+            const response = await fetch(/numbers/${numberId}, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ number: parseFloat(number) }),
+            });
+
+            const result = await response.json();
+            document.getElementById('message').innerText = result.message;
+        }
+
+        async function getAverage() {
+            const response = await fetch('/average', {
+                method: 'GET',
+            });
+
+            const result = await response.json();
+            if (response.status === 200) {
+                document.getElementById('average').innerText = Average: ${result.average};
+            } else {
+                document.getElementById('average').innerText = result.message;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Average Calculator</h1>
+    <div>
+        <label for="numberId">Number ID:</label>
+        <input type="number" id="numberId" required>
+    </div>
+    <div>
+        <label for="number">Number:</label>
+        <input type="number" id="number" required>
+    </div>
+    <button onclick="addNumber()">Add Number</button>
+    <p id="message"></p>
+    <button onclick="getAverage()">Get Average</button>
+    <p id="average"></p>
+</body>
+</html>
